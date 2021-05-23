@@ -9,13 +9,16 @@ import { Yelp } from "../../util/Yelp";
 class App extends React.Component {
     constructor(props){
         super(props);
-        this.state = { businesses: [] };
+        this.state = { businesses: [], searchButton: "Let's Go" };
         this.searchYelp = this.searchYelp.bind(this);
         
     }
-    searchYelp(term, location, sortBy) {
-        Yelp.search(term, location, sortBy).then(businesses =>{
-            this.setState({ businesses: businesses })
+    
+    async searchYelp(term, location, sortBy) {
+        await this.setState({ searchButton: "Searching..."});
+        Yelp.search(term, location, sortBy)
+        .then(businesses =>{
+            this.setState({ businesses: businesses, searchButton: "Let's Go" })
         })
     }
     
@@ -23,7 +26,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <h1>ravenous</h1>
-                <SearchBar searchYelp={this.searchYelp} />
+                <SearchBar searchYelp={this.searchYelp} searchButton={this.state.searchButton} />
                 <BusinessList businesses={this.state.businesses} />
             </div>
         );
