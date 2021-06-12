@@ -18,8 +18,14 @@ class App extends React.Component {
         await this.setState({ searchButton: "Searching..."});
         Yelp.search(term, location, sortBy)
         .then(businesses =>{
-            this.setState({ businesses: businesses, searchButton: "Let's Go" })
+            if ( businesses.length === 0 ) {
+                this.setState({searchButton: "Cors Error"})
+            } else {
+                this.setState({ businesses: businesses, searchButton: "Let's Go" })
+            }
+            
         })
+        
     }
     
     render() {
